@@ -6,19 +6,19 @@ Proyecto que realicé en la universidad para una tienda de ropas y accesorios de
 
 - Loging
 
-    ![inicio](https://media.giphy.com/media/sPxze4JDfoabrVw2Xa/giphy.gif)
+    <img src="https://media.giphy.com/media/sPxze4JDfoabrVw2Xa/giphy.gif" width="700" height="300">
 
 - Categorías
 
-    ![Categorias](https://media.giphy.com/media/bhRs39JKOFS2j3806b/giphy.gif)
+    <img src="https://media.giphy.com/media/bhRs39JKOFS2j3806b/giphy.gif" width="700" height="300">
 
 - Clientes
 
-    ![Clientes](https://media.giphy.com/media/8NisIfwlvN81rgS9Td/giphy.gif)
+    <img src="https://media.giphy.com/media/8NisIfwlvN81rgS9Td/giphy.gif" width="700" height="300">
 
 - Buscar clientes
 
-    ![Buscar clientes](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMzkwMDFmOWI4ZWYyMjc2ZmY2NTcxYWZjYTQ3MzZiMjZmYzlkYWVhYyZjdD1n/ou8yXQ39EGXItnGP23/giphy.gif)
+    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMzkwMDFmOWI4ZWYyMjc2ZmY2NTcxYWZjYTQ3MzZiMjZmYzlkYWVhYyZjdD1n/ou8yXQ39EGXItnGP23/giphy.gif" width="700" height="300">
 
 ---
 
@@ -30,3 +30,4 @@ Proyecto que realicé en la universidad para una tienda de ropas y accesorios de
 
 - [aa.asencios@gmail.com](mailto:aa.asenciosg@gmail.com)
 - [angelo_asenciosg@outlook.com](mailto:angelo_asenciosg@outlook.com)
+
