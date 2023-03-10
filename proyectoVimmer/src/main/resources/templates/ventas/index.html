@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head th:replace="layout/fragmentos :: head"></head>
+    <body class="sb-nav-fixed">
+        <nav th:replace="layout/fragmentos :: cabecera"></nav>
+        <div id="layoutSidenav">
+            <div th:replace="layout/fragmentos :: menu"></div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container font-monospace pt-4 fs-5">
+                    <p class="text-center text-dark fs-3 font-monospace">Busqueda de Clientes</p>
+                    
+                    	<div class="alert alert-primary alert-dismissible fade show text-center mt-3" role="alert" th:if="${warning != null}">
+	                    	<button type="button" class="btn-close" data-dismiss="alert" aria-label="Close">
+	                    	<span aria-hidden="true">&times;</span>
+	                    	</button>
+                    		<strong>[[${warning}]]</strong>
+                    	</div>
+                    
+                    	<form th:action="@{/ventas/buscarCliente}" method="post">
+                    		<div class="card color-naranja">
+                    			<div class="card-header border-dark">Buscar Cliente:</div>
+                    			<div class="card-body color-naranja-suave">
+                    				<div class="row">
+                    					<div class="col-md-6 mb-3">
+                    						<input name="apellido" type="text" class="form-control"
+                    						placeholder="Ingrese apellido a buscar">
+                    					</div>
+                    					<div class="col-md-6 border-dark">
+                    						<button type="submit" class="btn btn-dark ">
+                    							<i class="fa-solid fa-magnifying-glass"></i> Buscar
+                    						</button>
+                    					</div>
+                    				</div>
+                    			</div>
+                    		</div>
+                    	</form>
+                    	
+                    	<br><br>
+                    	<div class="card border-dark" th:if="${listaClientes != null}">
+                    		<div class="card-header color-naranja border-dark">Lista de Clientes</div>
+                    		<div class="card-body color-naranja-suave border-dark">
+                    			<table class="table table-bordered table-hover">
+                    				<thead class="border-dark color-naranja">
+                    					<tr>
+                    						<th>Apellidos</th>
+                    						<th>Nombres</th>
+                    						<th>Correo</th>
+                    						<th>Distrito</th>
+                    						<th>Fecha de registro</th>
+                    					</tr>
+                    				</thead>
+                    				<tbody class="border-dark">
+                    					<tr th:each="item: ${listaClientes}">
+                    						<td th:text="${item.apellido}"></td>
+                    						<td th:text="${item.nombre}"></td>
+                    						<td th:text="${item.correo}"></td>
+                    						<td th:text="${item.distrito.nombre}"></td>
+                    						<td th:text="${item.fecha_registro}"></td>
+                    					</tr>
+                    				</tbody>
+                    			</table>
+                    		</div>
+                    	</div>
+                    	
+                    </div>
+                </main>
+                <footer th:replace="layout/fragmentos :: footer"></footer>
+            </div>
+        </div>
+        <div th:replace="layout/fragmentos :: scripts"></div>
+    </body>
+</html>

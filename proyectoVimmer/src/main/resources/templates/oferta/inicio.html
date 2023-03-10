@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head th:replace="layout/fragmentos :: head"></head>
+    <body class="sb-nav-fixed">
+        <nav th:replace="layout/fragmentos :: cabecera"></nav>
+        <div id="layoutSidenav">
+            <div th:replace="layout/fragmentos :: menu"></div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container pt-4 fs-5">
+                    
+                    <div th:if="${mensaje != null}" class="alert alert-primary alert-dismissible fade show" role="alert">
+					  <strong>Mensaje!</strong> <span th:text="${mensaje}"></span>
+					  <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close">
+					    <span aria-hidden="true">&times;</span>
+					  </button>
+					</div>
+                    
+                   	<p class="text-center text-dark fs-3 font-monospace">Ofertas</p>
+                   		<form th:action="@{/oferta/form}" th:object="${oferta}" method="post" class="font-monospace">
+                   		  	
+                   			<div class="card bg-warning text-dark border-dark">
+                   				<div class="card-header border-dark color-morado-oscuro text-dark">Datos de la Oferta:</div>
+                   				<div class="card-body color-morado">
+                   					<div class="row">
+                   						
+                   						<div class="col-md-6">
+                   							<label class="mb-2 text-dark">Tipo de Oferta:</label>
+                   							<input th:field="*{tipo_oferta}" type="text" class="form-control border-dark" 
+                   							placeholder="Ingrese el tipo de Oferta" th:errorclass="'form-control alert-danger'">
+                   							<small class="form-text text-dark" th:if="${#fields.hasErrors('tipo_oferta')}">Campo obligatorio</small>
+                   						</div>
+                   						
+                   					</div>
+                   					
+                   					<div class="row mt-4">
+                   						<div class="col-12 text-center">
+                   							<button type="submit" class="btn btn-dark">
+                   								<i class="fas fa-save"></i>
+                   								Guardar Oferta
+                   							</button>
+                   						</div>
+                   					</div>
+                   				</div>
+                   			</div>
+                   		</form>
+                   		
+                   		<br>
+                   		<!-- Aqui inicia tabla del reporte -->
+                   		
+                   		<div class="card font-monospace border-dark text-dark">
+                   			<div class="card-header color-morado-oscuro border-dark">Ofertas registradas:</div>
+                   			<div class="card-body color-morado">
+                   				<table class="table table-bordered table-hover border-dark">
+                   				
+                   					<thead class="text-center color-morado-oscuro text-dark border-dark">
+                   						<tr class="border-dark">
+                   							<th>Tipo de oferta</th>
+                   							<th>Fecha de registro</th>
+                   							<th></th>
+                   							<th></th>
+                   						</tr>
+                   					</thead>
+                   				
+                   					<tbody class="text-dark border-dark">
+                   						<tr th:each="item : ${listaOferta}">
+                   							<td th:text="${item.tipo_oferta}"></td>
+                   							<td th:text="${item.fecha_registro}"></td>
+                   							
+                   							<!-- th:href="@{/oferta/editar/} + ${item.id}" -->
+                   							
+                   							<td class="text-center">
+                   								<a class="btn btn-dark editarOferta" href="#"
+                   									th:data-id="${item.id}"
+                   									th:data-tipo_oferta="${item.tipo_oferta}"
+                   								>
+                   								<i class="fas fa-edit"></i> Editar
+                   								</a>
+                   							</td>
+                   							
+                   							<td class="text-center">
+                   								<a class="btn btn-danger" th:href="@{/oferta/eliminar/} + ${item.id}"
+                   								onclick="confirm('¿Desea eliminar la Oferta?')">
+                   								<i class="fas fa-trash-alt"></i> Eliminar
+                   								</a>
+                   							</td> 
+                   							
+                   						</tr>
+                   					</tbody>
+                   						
+                   				</table>	
+                   			</div>
+                   		</div>
+                
+                   		<!-- Aqui finaliza la tabla reporte -->
+                   		
+                   </div>
+                </main>
+                <footer th:replace="layout/fragmentos :: footer"></footer>
+            </div>
+        </div>
+        
+        <!-- Modal -->
+		<div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header color-morado text-center">
+		        <h5 class="modal-title" id="exampleModalLabel">Editar Oferta</h5>
+		        
+		      </div>
+		      
+		      	<form th:action="@{/oferta/form}" th:object="${oferta}" method="post" class="font-monospace">
+			      	<div class="modal-body">
+			       		<input type="hidden" th:field="*{id}">
+			       		
+			       		<div class="row">
+			       			<div class="col-12 mb-3">
+			       				<label class="mb-2 text-dark">Tipo de Oferta:</label>
+                   				<input name="tipo_oferta" id="txtTipoOferta" type="text" class="form-control border-dark" placeholder="Ingrese el tipo de Oferta">
+			       			</div>
+			       		</div>
+			       		
+			      	</div>
+			      	
+			      	<div class="modal-footer">
+			        	<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa-solid fa-ban"></i> Cancelar</button>
+			        	<button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> Guardar Cambios</button>
+			      	</div>
+			      	
+		      	</form>
+		    </div>
+		  </div>
+		</div>
+        
+        <div th:replace="layout/fragmentos :: scripts"></div>
+        <script type="text/javascript" th:src="@{/js/oferta.js}"></script>
+    </body>
+</html>

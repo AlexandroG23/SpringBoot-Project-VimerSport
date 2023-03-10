@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head th:replace="layout/fragmentos :: head"></head>
+    <body class="sb-nav-fixed">
+        <nav th:replace="layout/fragmentos :: cabecera"></nav>
+        <div id="layoutSidenav">
+            <div th:replace="layout/fragmentos :: menu"></div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container pt-4 fs-5">
+                    
+                    <div th:if="${mensaje != null}" class="alert alert-primary alert-dismissible fade show" role="alert">
+					  <strong>Mensaje!</strong> <span th:text="${mensaje}"></span>
+					  <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close">
+					    <span aria-hidden="true">&times;</span>
+					  </button>
+					</div>
+                    
+                    <p class="text-center fs-3 font-monospace">Clientes</p>
+                    <form th:action="@{/cliente/form}" th:object="${cliente}" method="post" class="font-monospace">
+                   			
+                   			<div class="card bg-primary text-dark border-dark">
+                   				<div class="card-header color-azul border-dark">Datos del cliente:</div>
+                   				<div class="card-body color-azul-claro">
+                   					
+                   					<div class="row">
+	                   					<div class="col-md-6 mb-3">
+	                    					<label class="mb-2">Distrito:</label>
+	                    					<select th:field="*{distrito.id}" class="form-select border-dark" required="required">
+	                    						<option value="">Seleccione una opción</option>
+	                    					  	<option th:each="item : ${listaDistrito}" th:value="${item.id}" th:text="${item.nombre}"></option>
+	                    					</select>
+	                    				</div>
+	                    				
+	                    				<div class="col-md-6">
+                   							<label class="mb-2">Correo:</label>
+                   							<input th:field="*{correo}" type="email" class="form-control border-dark" 
+                   							placeholder="Ingrese el correo" th:errorclass="'form-control alert-danger'">
+                   							<small class="form-text text-danger" th:if="${#fields.hasErrors('correo')}">Campo obligatorio</small>
+                   						</div>
+	                    			
+ 	                    			</div> 
+                   					
+                   					<div class="row">
+                   						
+                   						<div class="col-md-6">
+                   							<label class="mb-2">Nombre:</label>
+                   							<input th:field="*{nombre}" type="text" class="form-control border-dark mb-3" 
+                   							placeholder="Ingrese el nombre" th:errorclass="'form-control alert-danger'">
+                   							<small class="form-text text-danger" th:if="${#fields.hasErrors('nombre')}">Campo obligatorio</small>
+                   						</div>
+                   						<div class="col-md-6">
+                   							<label class="mb-2">Apellido:</label>
+                   							<input th:field="*{apellido}" type="text" class="form-control border-dark mb-3" 
+                   							placeholder="Ingrese el apellido" th:errorclass="'form-control alert-danger'">
+                   							<small class="form-text text-danger" th:if="${#fields.hasErrors('apellido')}">Campo obligatorio</small>
+                   						</div>
+                   						
+                   						
+                   					</div>
+                   					
+                   					<div class="row mt-4">
+                   						<div class="col-12 text-center">
+                   							<button type="submit" class="btn btn-dark">
+                   								<i class="fas fa-save"></i>
+                   								Guardar Cliente
+                   							</button>
+                   						</div>
+                   					</div>
+                   				</div>
+                   			</div>
+                   		</form>
+                   		
+                   		<br>
+                   		<!-- Aqui inicia tabla del reporte -->
+                   		
+                   		<div class="card font-monospace border-dark">
+                   			<div class="card-header color-azul border-dark">Clientes registrados:</div>
+                   			<div class="card-body color-azul-claro">
+                   				<table class="table table-bordered table-hover border-dark">
+                   				
+                   					<thead class="text-center bg-white">
+                   						<tr class="color-azul">
+                   							<th>Distrito</th>
+                   							<th>Nombre</th>
+                   							<th>Apellido</th>
+                   							<th>Correo</th>
+                   							<th>Fecha de registro</th>
+                   							<th></th>
+                   							<th></th>
+                   						</tr>
+                   					</thead>
+                   				
+                   					<tbody>
+                   						<tr th:each="item : ${listaClientes}">
+                   							<td th:text="${item.distrito.nombre}"></td>
+                   							<td th:text="${item.nombre}"></td>
+                   							<td th:text="${item.apellido}"></td>
+                   							<td th:text="${item.correo}"></td>
+                   							<td th:text="${item.fecha_registro}"></td>
+                   							
+                   							<!-- th:href="@{/cliente/editar/} + ${item.id}" -->
+                   							
+                   							<td class="text-center">
+                   								<a class="btn btn-dark editarCliente" href="#"
+                   									th:data-id="${item.id}"
+                   									th:data-distrito="${item.distrito.id}"
+                   									th:data-nombre="${item.nombre}"
+                   									th:data-apellido="${item.apellido}"
+                   									th:data-correo="${item.correo}"
+                   								>
+                   							
+                   								<i class="fas fa-edit"></i> Editar
+                   								</a>
+                   							</td>
+                   							
+                   							<td class="text-center">
+                   								<a class="btn btn-danger" th:href="@{/cliente/eliminar/} + ${item.id}"
+                   								onclick="confirm('¿Desea eliminar el registro del cliente?')">
+                   								<i class="fas fa-trash-alt"></i> Eliminar
+                   								</a>
+                   							</td> 
+                   							
+                   						</tr>
+                   					</tbody>
+                   						
+                   				</table>	
+                   			</div>
+                   		</div>
+                
+                   		<!-- Aqui finaliza la tabla reporte -->
+                    
+                    </div>
+                </main>
+                <footer th:replace="layout/fragmentos :: footer"></footer>
+            </div>
+        </div>
+        
+        <!-- Modal -->
+		<div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header color-azul-claro text-center">
+		        <h5 class="modal-title" id="exampleModalLabel">Editar Cliente</h5>
+		        
+		      </div>
+		      
+		      	<form th:action="@{/cliente/form}" th:object="${cliente}" method="post" class="font-monospace">
+			      	<div class="modal-body">
+			       		<input type="hidden" th:field="*{id}">
+			       		
+			       		<div class="row">
+			       			<div class="col-12 mb-3">
+			       				<label class="mb-2">Distrito:</label>
+	                    			<select name="distrito.id" id="cboDistrito" class="form-select border-dark">
+	                    				<option value="">Seleccione una opción</option>
+	                    				<option th:each="item : ${listaDistrito}" th:value="${item.id}" th:text="${item.nombre}"></option>
+	                    			</select>
+			       			</div>
+			       		</div>
+			       		
+			       		<div class="row">
+			       			<div class="col-12 mb-3">
+			       				<label class="mb-2">Correo:</label>
+                   				<input name="correo" id="txtCorreo" type="email" class="form-control border-dark" placeholder="Ingrese el correo">
+			       			</div>
+			       		</div>
+			       		
+			       		<div class="row">
+			       			<div class="col-12 mb-3">
+			       				<label class="mb-2">Nombre:</label>
+                   				<input name="nombre" id="txtNombre" type="text" class="form-control border-dark mb-3" placeholder="Ingrese el nombre">
+			       			</div>
+			       		</div>
+			       		
+			       		<div class="row">
+			       			<div class="col-12 mb-3">
+			       				<label class="mb-2">Apellido:</label>
+                   				<input name="apellido" id="txtApellido" type="text" class="form-control border-dark mb-3" placeholder="Ingrese el apellido">
+			       			</div>
+			       		</div>
+			        
+			      	</div>
+			      	<div class="modal-footer">
+			        	<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa-solid fa-ban"></i> Cancelar</button>
+			        	<button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> Guardar Cambios</button>
+			      	</div>
+		      	</form>
+		    </div>
+		  </div>
+		</div>
+        
+        <div th:replace="layout/fragmentos :: scripts"></div>
+        <script type="text/javascript" th:src="@{/js/cliente.js}"></script>
+    </body>
+</html>

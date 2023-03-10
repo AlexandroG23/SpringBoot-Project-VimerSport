@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head th:replace="layout/fragmentos :: head"></head>
+    <body class="sb-nav-fixed">
+        <nav th:replace="layout/fragmentos :: cabecera"></nav>
+        <div id="layoutSidenav">
+            <div th:replace="layout/fragmentos :: menu"></div>
+            <div id="layoutSidenav_content">
+                <main class="color-negro">
+                    <div class="container pt-3 text-center fs-3 font-monospace">
+                    	
+                    	<img class="w-100 " th:src="@{/img/LocalVimer2022.jpg}">
+                    </div>
+                </main>
+                
+            </div>
+        </div>
+        <div th:replace="layout/fragmentos :: scripts"></div>
+    </body>
+</html>

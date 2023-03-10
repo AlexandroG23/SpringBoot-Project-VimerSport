@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head th:replace="layout/fragmentos :: head"></head>
+    <body class="sb-nav-fixed">
+        <nav th:replace="layout/fragmentos :: cabecera"></nav>
+        <div id="layoutSidenav">
+            <div th:replace="layout/fragmentos :: menu"></div>
+            <div id="layoutSidenav_content">
+                <main>
+                <div class="container pt-3 fs-5">
+                
+                	<div th:if="${mensaje != null}" class="alert alert-primary alert-dismissible fade show" role="alert">
+					  <strong>Mensaje!</strong> <span th:text="${mensaje}"></span>
+					  	<button type="button" class="btn-close" data-dismiss="alert" aria-label="Close">
+					   	 <span aria-hidden="true">&times;</span>
+					  	</button>
+					</div>
+                	
+                	<p class="text-center text-dark fs-3 font-monospace">Detalles de la Oferta</p>
+                    <form th:action="@{/detalle_oferta/form}" th:object="${detalleoferta}" method="post" class="font-monospace">
+                    	
+                    		<div class="card bg-danger text-dark border-dark">
+                    			<div class="card-header color-verde-2 border-dark">Datos del producto y oferta</div>
+                    			<div class="card-body color-verde-2-o border-dark">
+                    			
+                    				<div class="row">
+	                    				<div class="col-md-6 mb-3">
+	                    					<label class="mb-3 border-dark">Producto:</label>
+	                    					<select th:field="*{producto.id}" class="form-select border-dark" required="required">
+	                    						<option value="" class="border-dark">Seleccione una opción</option>
+	                    						<option th:each="item : ${listaProducto}" th:value="${item.id}" th:text="${item.nombre}">
+	                    						</option>
+	                    					</select>
+	                    				</div>
+	                    				
+	                    				<div class="col-md-6 mb-3">
+	                    					<label class="mb-3 border-dark">Tipo de Oferta:</label>
+	                    					<select th:field="*{oferta.id}" class="form-select border-dark" required="required">
+	                    						<option value="">Seleccione una opción</option>
+	                    						<option th:each="item : ${listaOferta}" th:value="${item.id}" th:text="${item.tipo_oferta}">
+	                    						</option>
+	                    					</select>
+	                    				</div>
+	                    				
+                    				</div>
+                    				
+                    				<div class="row">
+                    					<div class="col-md-6 mb-3">
+                    						<label class="mb-3">Cantidad:</label>
+                    						<input th:field="*{oferta_cantidad}" type="number" class="form-control border-dark" 
+                    						placeholder="Ingrese la cantidad" th:errorclass="'form-control alert-danger'" required="required">
+                    						<small class="form-text text-dark" th:if="${#fields.hasErrors('oferta_cantidad')}">Campo obligatorio</small>
+                    					</div>
+                    					
+                    				</div>
+                    				
+                    				<div class="row mt-3">
+                    					<div class="col-12 text-center">
+                    						<button type="submit" class="btn btn-dark">
+                    							<i class="fas fa-save"></i>
+                    							Guardar Producto
+                    						</button>
+                    					</div>	
+                    				</div>
+                    				
+                    			</div>
+                    		</div>
+                    	</form>
+                    	<br>
+                    	
+                    	<div class="card border-dark font-monospace bg-danger">
+                    		<div class="card-header color-verde-2 border-dark text-dark">Detalle de las ofertas Registradas</div>
+                    		<div class="card-body color-verde-2-o">
+                    		
+                    			<table class="table table-bordered table-hover border-dark text-white">
+                    				<thead class="border-dark">
+                    					<tr class="border-dark text-center color-verde-2 text-dark">
+                    						<th>Cantidad</th>
+                    						<th>Producto</th>
+                    						<th>Oferta</th>
+                    						<th></th>
+                    						<th></th>
+                    					</tr>
+                    				</thead>
+                    				
+                    				<tbody class="border-dark text-dark">
+                    					<tr th:each="item: ${listaDetalleOferta}">
+                    						<td th:text="${item.oferta_cantidad}"></td>
+                    						<td th:text="${item.producto.nombre}"></td>
+                    						<td th:text="${item.oferta.tipo_oferta}"></td>
+                    						
+                    						<!-- th:href="@{/detalle_oferta/editar/} + ${item.id}" -->
+                    						<td class="text-center">
+                   								<a class="btn btn-dark editarDetalleOferta" href="#"
+                   									th:data-id="${item.id}"
+                   									th:data-oferta_cantidad="${item.oferta_cantidad}"
+                   									th:data-producto="${item.producto.id}"
+                   									th:data-oferta="${item.oferta.id}"
+                   								>
+                   								
+                   								<i class="fas fa-edit"></i> Editar
+                   								</a>
+                   							</td>
+                   							
+                   							<td class="text-center">
+                   								<a class="btn btn-danger" th:href="@{/detalle_oferta/eliminar/} + ${item.id}"
+                   								onclick="confirm('¿Desea eliminar el registro del detalle de oferta?')">
+                   								<i class="fas fa-trash-alt"></i> Eliminar
+                   								</a>
+                   							</td> 
+                    					</tr>
+                    				</tbody>
+                    				
+                    			</table>
+                    		</div>
+                    	</div>
+                    	
+                    	</div>
+                </main>
+                <footer th:replace="layout/fragmentos :: footer"></footer>
+            </div>
+        </div>
+        
+        <!-- Modal -->
+		<div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header color-verde-2 text-center">
+		        <h5 class="modal-title" id="exampleModalLabel">Editar Detalle de Oferta</h5>
+		        
+		      </div>
+		      
+		      	<form th:action="@{/detalle_oferta/form}" th:object="${detalleoferta}" method="post" class="font-monospace">
+			      	<div class="modal-body">
+			       		<input type="hidden" th:field="*{id}">
+			       			
+			       		<div class="row">
+			       			<div class="col-12 mb-3">
+			       				<label class="mb-3 border-dark">Producto:</label>
+	                    		<select name="producto.id" id="cboProducto" class="form-select border-dark" required="required">
+	                    			<option value="" class="border-dark">Seleccione una opción</option>
+	                    			<option th:each="item : ${listaProducto}" th:value="${item.id}" th:text="${item.nombre}"></option>
+	                    		</select>
+			       			</div>
+			       		</div>
+			       		
+			       		<div class="row">
+			       			<div class="col-12 mb-3">
+			       				<label class="mb-3 border-dark">Oferta:</label>
+	                    		<select name="oferta.id" id="cboOferta" class="form-select border-dark" required="required">
+	                    			<option value="">Seleccione una opción</option>
+	                    			<option th:each="item : ${listaOferta}" th:value="${item.id}" th:text="${item.tipo_oferta}">
+	                    			</option>
+	                    		</select>
+			       			</div>
+			       		</div>
+			       		
+			       		<div class="row">
+			       			<div class="col-12 mb-3">
+			       				<label class="mb-3">Cantidad:</label>
+                    			<input name="oferta_cantidad" id="txtOferta_cantidad" type="number" class="form-control border-dark" placeholder="Ingrese la cantidad">
+			       			</div>
+			       		</div>
+			       		
+			      	</div>
+			      	<div class="modal-footer">
+			        	<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa-solid fa-ban"></i> Cancelar</button>
+			        	<button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> Guardar Cambios</button>
+			      	</div>
+		      	</form>
+		    </div>
+		  </div>
+		</div>
+        
+        <div th:replace="layout/fragmentos :: scripts"></div>
+        <script type="text/javascript" th:src="@{/js/detalleoferta.js}"></script>
+        
+    </body>
+</html>

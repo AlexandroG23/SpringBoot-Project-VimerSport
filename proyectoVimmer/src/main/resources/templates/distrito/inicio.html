@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head th:replace="layout/fragmentos :: head"></head>
+    <body class="sb-nav-fixed">
+        <nav th:replace="layout/fragmentos :: cabecera"></nav>
+        <div id="layoutSidenav">
+            <div th:replace="layout/fragmentos :: menu"></div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container pt-4 fs-5">
+                    
+                    <div th:if="${mensaje != null}" class="alert alert-primary alert-dismissible fade show" role="alert">
+					  <strong>Mensaje!</strong> <span th:text="${mensaje}"></span>
+					  <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close">
+					    <span aria-hidden="true">&times;</span>
+					  </button>
+					</div>
+                    
+                   	<p class="text-center text-dark fs-3 font-monospace">Distritos</p>
+                   		<form th:action="@{/distrito/form}" th:object="${distrito}" method="post" class="font-monospace">
+                   			
+                   			<div class="card bg-secondary text-dark border-dark">
+                   				<div class="card-header color-verde-oscuro border-dark">Datos de los distritos:</div>
+                   				<div class="card-body color-verde">
+                   					 
+                   					<div class="row">
+                   						<div class="col-md-6">
+                   							<label class="mb-2">Nombre:</label>
+                   							<input th:field="*{nombre}" type="text" class="form-control border-dark" 
+                   							placeholder="Ingrese el distrito" th:errorclass="'form-control alert-danger'">
+                   							<small class="form-text text-danger" th:if="${#fields.hasErrors('nombre')}">Campo obligatorio</small>
+                   						</div>
+                   						
+                   						<div class="col-md-6">
+                   							<label class="mb-2">Postal:</label>
+                   							<input th:field="*{postal}" type="number" class="form-control border-dark" 
+                   							placeholder="Ingrese el codigo postal" th:errorclass="'form-control alert-danger'">
+                   							<small class="form-text text-danger" th:if="${#fields.hasErrors('postal')}">Campo obligatorio</small>
+                   						</div>
+                   					</div>
+                   					
+                   					<div class="row mt-4">
+                   						<div class="col-12 text-center">
+                   							<button type="submit" class="btn btn-dark">
+                   								<i class="fas fa-save"></i>
+                   								Guardar Distrito
+                   							</button>
+                   						</div>
+                   					</div>
+                   					
+                   				</div>
+                   			</div>
+                   		</form>
+                   		
+                   		<br>
+                   		<!-- Aqui inicia tabla del reporte -->
+                   		
+                		<div class="card font-monospace border-dark bg-secondary">
+                   			<div class="card-header border-dark color-verde-oscuro">Distritos registrados:</div>
+                   			<div class="card-body color-verde">
+                   				<table class="table table-bordered table-hover border-dark">
+                   				
+                   					<thead class="text-center color-verde-oscuro">
+                   						<tr>
+                   							
+                   							<th>Nombre del distrito</th>
+                   							<th>Codigo Postal</th>
+                   							<th>Fecha de registro</th>
+                   							<th></th>
+                   							<th></th>
+                   						</tr>
+                   					</thead>
+                   				
+                   					<tbody>
+                   						<tr th:each="item : ${listaDistritos}">
+                   							<td th:text="${item.nombre}"></td>
+                   							<td th:text="${item.postal}"></td>
+                   							<td th:text="${item.fecha_registro}"></td>
+                   							
+                   							<!-- th:href="@{/distrito/editar/} + ${item.id}" -->
+                   							
+                   							<td class="text-center">
+                   								<a class="btn btn-dark editarDistrito" href="#"
+                   									th:data-id="${item.id}"
+                   									th:data-nombre="${item.nombre}"
+                   									th:data-postal="${item.postal}"
+                   								>
+                   								<i class="fas fa-edit"></i> Editar
+                   								</a>
+                   							</td>
+                   							
+                   							<td class="text-center">
+                   								<a class="btn btn-danger" th:href="@{/distrito/eliminar/} + ${item.id}"
+                   								onclick="confirm('¿Desea eliminar el registro del Distrito?')">
+                   								<i class="fas fa-trash-alt"></i> Eliminar
+                   								</a>
+                   							</td> 
+                   							
+                   						</tr>
+                   					</tbody>
+                   						
+                   				</table>	
+                   			</div>
+                   		</div>
+                   		<!-- Aqui finaliza la tabla reporte -->
+                   		
+                   </div>
+                </main>
+                <footer th:replace="layout/fragmentos :: footer"></footer>
+            </div>
+        </div>
+        
+        <!-- Modal -->
+		<div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header color-verde-oscuro text-center">
+		        <h5 class="modal-title" id="exampleModalLabel">Editar Distrito</h5>
+		        
+		      </div>
+		      
+		      	<form th:action="@{/distrito/form}" th:object="${distrito}" method="post" class="font-monospace">
+			      	<div class="modal-body">
+			       		<input type="hidden" th:field="*{id}">
+			       		
+			       		<div class="row">
+			       			<div class="col-12 mb-3">
+			       				<label class="mb-2">Nombre:</label>
+                   				<input name="nombre" id="txtNombre" type="text" class="form-control border-dark" placeholder="Ingrese el distrito">
+			       			</div>
+			       		</div>
+			       		
+			       		<div class="row">
+			       			<div class="col-12 mb-3">
+			       				<label class="mb-2">Postal:</label>
+                   				<input name="postal" id="txtPostal" type="number" class="form-control border-dark" placeholder="Ingrese el codigo postal">
+			       			</div>
+			       		</div>
+			       		
+			      	</div>
+			      	
+			      	<div class="modal-footer">
+			        	<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa-solid fa-ban"></i> Cancelar</button>
+			        	<button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> Guardar Cambios</button>
+			      	</div>
+			      	
+		      	</form>
+		    </div>
+		  </div>
+		</div>
+        
+        <div th:replace="layout/fragmentos :: scripts"></div>
+        <script type="text/javascript" th:src="@{/js/distrito.js}"></script>
+    </body>
+</html>
