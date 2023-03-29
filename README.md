@@ -1,4 +1,4 @@
-# $Vimmer Sport$
+# $Vimer Sport$
 
 Proyecto que realicé en la universidad para una tienda de ropas y accesorios deportivos. En este proyecto usé Spring Boot, Spring Security, Spring Data JPA, Thymeleaf, Bootstrap, Jquery, Ajax, entre otros.
 
